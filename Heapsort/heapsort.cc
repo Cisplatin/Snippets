@@ -9,35 +9,54 @@ template <typename T> class HeapSort {
             T buffer = array[index_1];
             array[index_1] = array[index_2];
             array[index_2] = buffer;
-            return;
         }
 
         // Turns the subtree rooted at index into a heap satisfying the 
         // max-heap property - this assumes that the children of index are
         // both roots of max-heaps
         static void max_heapify(T * array, int size, int index) {
-            // Find the values of the child nodes
-            T left = (index * 2 < size) ? array[index * 2] : array[index] - 1;
-            T right = (index * 2 + 1 < size) ? array[index * 2 + 1] : array[index] - 1;
-            T max = (left < right) ? right : left;
-            T max_index = (left < right) ? index * 2 + 1 : index * 2;
+            // Find the values of the child nodes: messy if-loops are used
+            // to minimize the number of comparisons and as a result have
+            // a faster run-time. If no child exists, set it to one less than
+            // the root, as to make sure it will be "less"
+            T left, right;
+            if(index * 2 + 1 < size) {
+                left = array[index * 2];
+                right = array[index * 2 + 1];
+            } else if(index * 2 < size) {
+                left = array[index * 2];
+                right = array[index] - 1;
+            } else {
+                left = array[index] - 1;
+                right = array[index] - 1;
+            }
+
+            // Find the maximum index and value
+            T max_val, max_index;
+            if(left < right) {
+                max_val = right;
+                max_index = index * 2 + 1;
+            } else {
+                max_val = left;
+                max_index = index * 2;
+            }
 
             // Determine if the current index is less than the max; if so,
             // swap and recursively max_heapify
-            if(array[index] < max) {
+            if(array[index] < max_val) {
                 HeapSort<T>::swap(array, max_index, index);
                 HeapSort<T>::max_heapify(array, size, max_index);
             }
-            return;
         }
 
         // Turns the given array into a max-heap structure by calling
         // max_heapify on every node in reverse order
         static void build_max_heap(T * array, int size) {
-            for(int i = size - 1; i >= 0; i--) {
+            // Since the second half of elements are leaves, we only have
+            // to heapify the first half of elements
+            for(int i = size / 2 + 1; i >= 0; i--) {
                 HeapSort<T>::max_heapify(array, size, i);
             }
-            return;
         }
     public:
         // The sort function itself
@@ -50,7 +69,6 @@ template <typename T> class HeapSort {
                 HeapSort<T>::swap(array, --size, 0);
                 HeapSort<T>::max_heapify(array, size, 0);
             }
-            return;
         }
 };
 
@@ -62,23 +80,21 @@ using namespace std;
 int main() {
     // Generate a random array to test on
     srand(time(NULL));
-    const int size = 10;
+    const int size = 10000000;
     int * my_array = new int[size];
-    cout << "Array before sorting:" << endl;
     for(int i = 0; i < size; i++) {
-        cout << (my_array[i] = rand() % size) << " ";
+        my_array[i] = rand() % size;
     }
-    cout << endl;
 
-    // Sort the array
+    // Sort the array, time how long it takes
+    clock_t start, end;
+    start = clock();
     HeapSort<int>::sort(my_array, size);
-
-    // Print out the sorted array
-    cout << "Array after sorting:" << endl;
-    for(int i = 0; i < size; i++) {
-        cout << my_array[i] << " ";
-    }
-    cout << endl;
+    end = clock();
+    
+    // Print out the run-time of the sort
+    cout << "Time to sort " << size << " elements: ";
+    cout << ((float)end - (float)start) / CLOCKS_PER_SEC << " s" << endl;
     delete [] my_array;
     return 0;
 }
