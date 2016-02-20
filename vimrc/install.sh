@@ -1,0 +1,8 @@
+# A shady script to set-up my vim configuartion
+
+# Set up the .vimrc file
+cp vimrc ~/.vimrc
+
+# Install pathogen for next-level plugin management
+mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
