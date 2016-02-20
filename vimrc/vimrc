@@ -5,4 +5,5 @@ set number
 set tabstop=4 
 set expandtab
 set colorcolumn=80
+set backspace=indent,eol,start
 filetype plugin indent on
