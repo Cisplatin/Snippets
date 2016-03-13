@@ -11,7 +11,6 @@ class Markov:
 
     # TODO Recognize proper nouns and capitalize appropriately
     # TODO Accept non-ASCII text
-    # TODO Handle lack of any learning yet being called
 
     punctuation = [".", ",", "'", "\"", "(", ")", ";", " "]
     minimum_sentence_length = 5
@@ -24,12 +23,16 @@ class Markov:
         self.graph["\n"] = {}
         
         # We now load the previously learned data
-        with open(Markov.save_file) as data_file:
-            loaded_data = load(data_file)
-            for word in loaded_data:
-                for next_word in loaded_data[word]:
-                    self.graph[word][next_word] = loaded_data[word][next_word]
-        
+        try:
+            with open(Markov.save_file) as data_file:
+                loaded_data = load(data_file)
+                for word in loaded_data:
+                    for next_word in loaded_data[word]:
+                        self.graph[word][next_word] = loaded_data[word][next_word]
+        except IOError:
+        # No previous store was found. No worries, we just keep it empty
+            pass        
+
     @staticmethod
     def clean_word(word):
         """
@@ -93,13 +96,12 @@ class Markov:
         sentence = current.capitalize() + " "
         sentence_length = 1
         while current:
-            current = self.generate_next_word(current)
+            try:
+                current = self.generate_next_word(current)
+            except KeyError:
+                raise Exception("No data has been learned yet.")
             while sentence_length < Markov.minimum_sentence_length and not current:
                 current = choice(self.graph.keys())
             sentence += current + " "
             sentence_length += 1
         return sentence.strip() + "."
-
-markov = Markov()
-print markov.generate_sentence()
-markov.save()
