@@ -50,7 +50,7 @@ class Markov:
         next_word = randint(0, total_weight)
         for key in self.graph.keys():
             if next_word <= self.graph[word][key]:
-                return "." if key == "\n" else key
+                return "" if key == "\n" else key
             else:
                next_word -= self.graph[word][key]
 
@@ -60,13 +60,10 @@ class Markov:
         """
         # Currently chooses a random word as a starting word
         current = choice(self.graph.keys())
-        sentence = ""
-        while current != ".":
-            if sentence == "":
-                sentence += current.capitalize() + " "
-            else:
-                sentence += current + " "
+        sentence = current.capitalize() + " "
+        while current:
             current = self.generate_next_word(current)
+            sentence += current + " "
         return sentence
 
 markov = Markov()
