@@ -67,7 +67,7 @@ class Markov:
             else:
                 sentence += current + " "
             current = self.generate_next_word(current)
-        return sentence[:-1] + "."
+        return sentence
 
 markov = Markov()
 markov.learn("apple.txt")
