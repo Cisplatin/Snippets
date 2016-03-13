@@ -8,6 +8,10 @@ class Markov:
     Intended for ASCII text (i.e. won't filter characters like \xe2)
     """
 
+    # TODO Store/load learned data using JSON
+    # TODO Recognize proper nouns and capitalize appropriately
+    # TODO Accept non-ASCII text
+
     punctuation = [".", ",", "'", "\"", "(", ")", ";", " "]
     minimum_sentence_length = 5
 
