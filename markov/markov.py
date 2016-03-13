@@ -63,7 +63,7 @@ class Markov:
         sentence = ""
         while current != ".":
             if sentence == "":
-                sentence += current.capitalize()
+                sentence += current.capitalize() + " "
             else:
                 sentence += current + " "
             current = self.generate_next_word(current)
