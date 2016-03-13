@@ -9,6 +9,7 @@ class Markov:
     """
 
     punctuation = [".", ",", "'", "\"", "(", ")", ";", " "]
+    minimum_sentence_length = 5
 
     def __init__(self):
         self.graph = defaultdict(lambda : defaultdict(int))
@@ -61,9 +62,13 @@ class Markov:
         # Currently chooses a random word as a starting word
         current = choice(self.graph.keys())
         sentence = current.capitalize() + " "
+        sentence_length = 1
         while current:
             current = self.generate_next_word(current)
+            while sentence_length < Markov.minimum_sentence_length and not current:
+                current = choice(self.graph.keys())
             sentence += current + " "
+            sentence_length += 1
         return sentence
 
 markov = Markov()
