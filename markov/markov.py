@@ -5,7 +5,10 @@ class Markov:
     """
     An implementation of a markov graph. Current implementation is first order,
     using an adjacency list to represent the directed acyclic graph.
+    Intended for ASCII text (i.e. won't filter characters like \xe2)
     """
+
+    punctuation = [".", ",", "'", "\"", "(", ")", ";", " "]
 
     def __init__(self):
         self.graph = defaultdict(lambda : defaultdict(int))
@@ -17,8 +20,7 @@ class Markov:
         """
         Removes punctuation from the given word, and removes capital letters
         """
-        PUNCTUATION = [".", ",", "\"", "\'", "(", ")", "\\", ";", "\"", "'", "[", "]"]
-        for element in PUNCTUATION:
+        for element in Markov.punctuation:
             word = word.replace(element, "")
         return word.lower()
 
@@ -31,7 +33,7 @@ class Markov:
                 # Generate the list of words, without the newline character.
                 # We remove all commas and periods.
                 words = [Markov.clean_word(word) for word in line[:-1].split(" ")]
-
+                
                 # Add a unit of weight to an edge if we find a connection
                 for number, word in enumerate(words):
                     if number == len(words) - 1:
@@ -58,11 +60,11 @@ class Markov:
         """
         # Currently chooses a random word as a starting word
         current = choice(self.graph.keys())
-        sentence = current
+        sentence = ""
         while current != ".":
+            sentence += current + " "
             current = self.generate_next_word(current)
-            sentence += " " + current
-        return sentence
+        return sentence[:-1] + "."
 
 markov = Markov()
 markov.learn("apple.txt")
