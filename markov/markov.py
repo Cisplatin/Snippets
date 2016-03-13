@@ -17,7 +17,7 @@ class Markov:
         """
         Removes punctuation from the given word, and removes capital letters
         """
-        PUNCTUATION = [".", ",", "\"", "\'", ")", "(", "\\", ";"]
+        PUNCTUATION = [".", ",", "\"", "\'", ")", "(", "\\", ";", "\"", "'"]
         for element in PUNCTUATION:
             word = word.replace(element, "")
         return word.lower()
@@ -39,6 +39,19 @@ class Markov:
                     else:
                         self.graph[word][words[number + 1]] += 1
 
+    def generate_next_word(self, word):
+        """
+        Returns a randomly selected next-word based on the given word.
+        """
+        # Keep generating words until an end-of-sentence is come across
+        total_weight = sum(self.graph[word][key] for key in self.graph[word].keys())
+        next_word = randint(0, total_weight)
+        for key in self.graph.keys():
+            if next_word <= self.graph[word][key]:
+                return "." if key == "\n" else key
+            else:
+               next_word -= self.graph[word][key]
+
     def generate_sentence(self):
         """
         Generates a sentence based on what self has learned so far.
@@ -46,20 +59,9 @@ class Markov:
         # Currently chooses a random word as a starting word
         current = choice(self.graph.keys())
         sentence = current
-
-        # Keep generating words until an end-of-sentence is come across
-        while not current == "\n":
-            total_weight = sum(self.graph[current][key] for key in self.graph[current].keys())
-            next_word = randint(0, total_weight)
-            for key in self.graph.keys():
-                if next_word < self.graph[current][key]:
-                    current = key
-                    sentence += " " + current
-                    break
-                else:
-                    next_word -= self.graph[current][key]
-    
-        # A new line is found, so we return the sentence
+        while current != ".":
+            current = self.generate_next_word(current)
+            sentence += " " + current
         return sentence
 
 markov = Markov()
