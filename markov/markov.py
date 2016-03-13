@@ -11,6 +11,7 @@ class Markov:
 
     # TODO Recognize proper nouns and capitalize appropriately
     # TODO Accept non-ASCII text
+    # TODO Add interesting example
 
     punctuation = [".", ",", "'", "\"", "(", ")", ";", " "]
     minimum_sentence_length = 5
@@ -30,7 +31,7 @@ class Markov:
                     for next_word in loaded_data[word]:
                         self.graph[word][next_word] = loaded_data[word][next_word]
         except IOError:
-        # No previous store was found. No worries, we just keep it empty
+            # No previous store was found. No worries, we just keep it empty
             pass        
 
     @staticmethod
@@ -105,3 +106,9 @@ class Markov:
             sentence += current + " "
             sentence_length += 1
         return sentence.strip() + "."
+
+if __name__ == '__main__':
+    # An example of the Markov chain in action with Apple's terms and conditions
+    markov = Markov()
+    markov.learn("apple.txt")
+    print markov.generate_sentence()
