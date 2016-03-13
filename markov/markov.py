@@ -17,7 +17,7 @@ class Markov:
         """
         Removes punctuation from the given word, and removes capital letters
         """
-        PUNCTUATION = [".", ",", "\"", "\'", ")", "(", "\\", ";", "\"", "'"]
+        PUNCTUATION = [".", ",", "\"", "\'", "(", ")", "\\", ";", "\"", "'", "[", "]"]
         for element in PUNCTUATION:
             word = word.replace(element, "")
         return word.lower()
