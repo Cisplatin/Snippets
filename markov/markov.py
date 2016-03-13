@@ -69,7 +69,7 @@ class Markov:
                 current = choice(self.graph.keys())
             sentence += current + " "
             sentence_length += 1
-        return sentence
+        return sentence.strip() + "."
 
 markov = Markov()
 markov.learn("apple.txt")
