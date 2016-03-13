@@ -1,3 +1,4 @@
+from json import dump, load
 from random import choice, randint
 from collections import defaultdict
 
@@ -8,17 +9,26 @@ class Markov:
     Intended for ASCII text (i.e. won't filter characters like \xe2)
     """
 
-    # TODO Store/load learned data using JSON
     # TODO Recognize proper nouns and capitalize appropriately
     # TODO Accept non-ASCII text
+    # TODO Handle lack of any learning yet being called
 
     punctuation = [".", ",", "'", "\"", "(", ")", ";", " "]
     minimum_sentence_length = 5
+    save_file = "markov_save.json"
 
     def __init__(self):
         self.graph = defaultdict(lambda : defaultdict(int))
+
         # We add a \n character as part of the graph to indicate the end
         self.graph["\n"] = {}
+        
+        # We now load the previously learned data
+        with open(Markov.save_file) as data_file:
+            loaded_data = load(data_file)
+            for word in loaded_data:
+                for next_word in loaded_data[word]:
+                    self.graph[word][next_word] = loaded_data[word][next_word]
         
     @staticmethod
     def clean_word(word):
@@ -28,6 +38,21 @@ class Markov:
         for element in Markov.punctuation:
             word = word.replace(element, "")
         return word.lower()
+
+    def convert_graph(self, ddict):
+        """
+        Converts the current graph to a normal dictionary for JSON's sake 
+        """
+        if isinstance(ddict, defaultdict):
+            ddict = {key: self.convert_graph(value) for key, value in ddict.iteritems()}
+        return ddict
+
+    def save(self):
+        """
+        Saves the current data into a text file
+        """
+        converted = self.convert_graph(self.graph)
+        dump(converted, open(self.save_file, "w"))
 
     def learn(self, filename):
         """
@@ -76,6 +101,5 @@ class Markov:
         return sentence.strip() + "."
 
 markov = Markov()
-markov.learn("apple.txt")
 print markov.generate_sentence()
-                    
+markov.save()
