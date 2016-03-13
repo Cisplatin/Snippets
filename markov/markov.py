@@ -62,7 +62,10 @@ class Markov:
         current = choice(self.graph.keys())
         sentence = ""
         while current != ".":
-            sentence += current + " "
+            if sentence == "":
+                sentence += current.capitalize()
+            else:
+                sentence += current + " "
             current = self.generate_next_word(current)
         return sentence[:-1] + "."
 
