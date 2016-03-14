@@ -8,6 +8,7 @@ class Markov:
 
     EOF = [".", "\n"]
     SPECIAL_CHARS = [",", "(", ")"]
+    ORDER = 2
 
     def __init__(self):
         """
@@ -27,25 +28,25 @@ class Markov:
             word = word.replace(char, "")
         return word.strip()
 
-    def addWord(self, recent_word, last_word, word):
+    def addWord(self, recent, word):
         """
         Adds the new word into the known dictionary.
         """
-        if not (recent_word, last_word) in self.graph:
-            self.graph[(recent_word, last_word)] = {}
-        if not word in self.graph[(recent_word, last_word)]:
-            self.graph[(recent_word, last_word)][word] = 0
-        self.graph[(recent_word, last_word)][word] += 1
+        if not recent in self.graph:
+            self.graph[recent] = {}
+        if not word in self.graph[recent]:
+            self.graph[recent][word] = 0
+        self.graph[recent][word] += 1
 
     def learn(self, filename):
         """ 
         Learns the given data for later generation.
         """
-        last_word, recent_word = Markov.EOF[0], Markov.EOF[0]
+        recent = tuple(Markov.EOF[0] for i in xrange(Markov.ORDER))
         with open(filename) as data:
             for entry in data:
                 # Take each entry line by line and enter it into our graph
-                words = [Markov.clean(word) for word in entry.split(" ")]
+                words = tuple(Markov.clean(word) for word in entry.split(" "))
                 for word in words:
                     # Take note if its an end of line
                     EOF_found = False
@@ -54,18 +55,18 @@ class Markov:
                         EOF_found = True
 
                     # Learn the new word
-                    self.addWord(recent_word, last_word, word)
+                    self.addWord(recent, word)
                     if EOF_found:
-                        self.addWord(last_word, word, Markov.EOF[0])
-                        recent_word, last_word = Markov.EOF[0], Markov.EOF[0]
+                        self.addWord(recent[1:] + (word,), Markov.EOF[0])
+                        recent = tuple(Markov.EOF[0] for i in xrange(Markov.ORDER))
                     else:
-                        recent_word, last_word = last_word, word
+                        recent = recent[1:] + (word,)
 
-    def generate_word(self, recent_word, last_word):
+    def generate_word(self, recent):
         """
         Generates a word based on the two given preceding words.
         """
-        current_graph = self.graph[(recent_word, last_word)]
+        current_graph = self.graph[recent]
         total_weight = sum(current_graph[next_word] for next_word in current_graph.keys())
         selected = randint(0, total_weight)
         for next_word in current_graph.keys():
@@ -77,13 +78,13 @@ class Markov:
         """
         Generates a sentence based on what has been learned thus far.
         """
-        recent_word, last_word = Markov.EOF[0], Markov.EOF[0]
-        next_word = self.generate_word(recent_word, last_word)
+        recent = tuple(Markov.EOF[0] for i in xrange(Markov.ORDER))
+        next_word = self.generate_word(recent)
         sentence = ""
         while next_word != ".":
-            next_word = self.generate_word(recent_word, last_word)
+            next_word = self.generate_word(recent)
             sentence += next_word + " "
-            recent_word, last_word = last_word, next_word
+            recent = recent[1:] + (next_word,)
         return sentence[:-2].strip() + Markov.EOF[0]
 
 if __name__ == '__main__':
