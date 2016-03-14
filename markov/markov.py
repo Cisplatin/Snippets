@@ -23,6 +23,8 @@ class Markov:
         # Try to load already availible data from the last run
         try:
             with open(Markov.SAVE_FILE) as data:
+                # We use pickle to save/load the data as JSON doesn't have
+                # native tuple support
                 self.graph = load(data)
         except IOError:
             pass
