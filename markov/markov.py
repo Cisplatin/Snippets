@@ -1,3 +1,4 @@
+from pickle import load, dump
 from random import randint
 
 class Markov:
@@ -9,6 +10,7 @@ class Markov:
     EOF = [".", "\n"]
     SPECIAL_CHARS = [",", "(", ")"]
     ORDER = 2
+    SAVE_FILE = "markov_save.dat"
 
     def __init__(self):
         """
@@ -17,6 +19,13 @@ class Markov:
         # We represent the graph has a dictionary of dictionaries. The entry
         # "." is used as both the end and the beginning of a sentence.
         self.graph = {}
+        
+        # Try to load already availible data from the last run
+        try:
+            with open(Markov.SAVE_FILE) as data:
+                self.graph = load(data)
+        except IOError:
+            pass
 
     @staticmethod
     def empty_list():
@@ -34,6 +43,13 @@ class Markov:
         for char in Markov.SPECIAL_CHARS:
             word = word.replace(char, "")
         return word.strip()
+
+    def save(self):
+        """
+        Stores the graph so far into a .json file
+        """
+        with open(Markov.SAVE_FILE, "w") as data:
+            dump(self.graph, data)
 
     def addWord(self, recent, word):
         """
@@ -75,7 +91,11 @@ class Markov:
         """
         Generates a word based on the two given preceding words.
         """
-        current_graph = self.graph[recent]
+        try:
+            current_graph = self.graph[recent]
+        except:
+            # We haven't learned anything yet!
+            raise Exception("No data has been learned yet.")
         total_weight = sum(current_graph[next_word] for next_word in current_graph.keys())
         selected = randint(0, total_weight)
         for next_word in current_graph.keys():
@@ -96,6 +116,9 @@ class Markov:
         return sentence[:-2].strip() + Markov.EOF[0]
 
 if __name__ == '__main__':
+    """
+    An example run of the Markov chain
+    """
     markov = Markov()
     markov.learn("apple.txt")
     print markov.generate_sentence()
