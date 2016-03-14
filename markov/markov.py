@@ -116,11 +116,3 @@ class Markov:
             sentence += next_word + " "
             recent = recent[1:] + (next_word,)
         return sentence[:-2].strip() + Markov.EOF[0]
-
-if __name__ == '__main__':
-    """
-    An example run of the Markov chain
-    """
-    markov = Markov()
-    markov.learn("apple.txt")
-    print markov.generate_sentence()
