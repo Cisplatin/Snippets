@@ -19,6 +19,13 @@ class Markov:
         self.graph = {}
 
     @staticmethod
+    def empty_list():
+        """
+        Returns a recent object that assumes nothing has been read.
+        """
+        return tuple([Markov.EOF[0] for i in xrange(Markov.ORDER)])
+
+    @staticmethod
     def clean(word):
         """
         Returns a cleaned version of the given word.
@@ -35,14 +42,15 @@ class Markov:
         if not recent in self.graph:
             self.graph[recent] = {}
         if not word in self.graph[recent]:
-            self.graph[recent][word] = 0
-        self.graph[recent][word] += 1
+            self.graph[recent][word] = 1
+        else:
+            self.graph[recent][word] += 1
 
     def learn(self, filename):
         """ 
         Learns the given data for later generation.
         """
-        recent = tuple(Markov.EOF[0] for i in xrange(Markov.ORDER))
+        recent = Markov.empty_list()
         with open(filename) as data:
             for entry in data:
                 # Take each entry line by line and enter it into our graph
@@ -58,7 +66,7 @@ class Markov:
                     self.addWord(recent, word)
                     if EOF_found:
                         self.addWord(recent[1:] + (word,), Markov.EOF[0])
-                        recent = tuple(Markov.EOF[0] for i in xrange(Markov.ORDER))
+                        recent = Markov.empty_list()
                     else:
                         recent = recent[1:] + (word,)
 
@@ -78,9 +86,8 @@ class Markov:
         """
         Generates a sentence based on what has been learned thus far.
         """
-        recent = tuple(Markov.EOF[0] for i in xrange(Markov.ORDER))
+        recent, sentence = Markov.empty_list(), ""
         next_word = self.generate_word(recent)
-        sentence = ""
         while next_word != ".":
             next_word = self.generate_word(recent)
             sentence += next_word + " "
