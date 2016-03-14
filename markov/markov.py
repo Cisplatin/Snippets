@@ -55,6 +55,7 @@ class Markov:
             for entry in data:
                 # Take each entry line by line and enter it into our graph
                 words = tuple(Markov.clean(word) for word in entry.split(" "))
+                words = filter(lambda x: x, words)
                 for word in words:
                     # Take note if its an end of line
                     EOF_found = False
@@ -96,5 +97,5 @@ class Markov:
 
 if __name__ == '__main__':
     markov = Markov()
-    markov.learn("testfile.txt")
+    markov.learn("apple.txt")
     print markov.generate_sentence()
