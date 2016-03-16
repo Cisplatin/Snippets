@@ -20,15 +20,12 @@ class Markov:
         # "." is used as both the end and the beginning of a sentence.
         self.graph = {}
         
-        # Try to load already availible data from the last run
+        # Try to load the default .jsonf ile. If it doesn't exist, we ignore
         try:
-            with open(Markov.SAVE_FILE) as data:
-                # We use pickle to save/load the data as JSON doesn't have
-                # native tuple support
-                self.graph = load(data)
+            self.load(Markov.SAVE_FILE)
         except IOError:
             pass
-
+        
     @staticmethod
     def empty_list():
         """
@@ -46,11 +43,25 @@ class Markov:
             word = word.replace(char, "")
         return word.strip()
 
-    def save(self):
+    def load(self, load_file=None):
         """
-        Stores the graph so far into a .json file
+        Loads a given .json file into the graph. Throws an IOError if the file
+        does not exist.
         """
-        with open(Markov.SAVE_FILE, "w") as data:
+        if not load_file:
+            load_file = Markov.SAVE_FILE
+        with open(load_file) as data:
+            # We use pickle to save/load the data as JSON doesn't have
+            # native tuple support
+            self.graph = load(data)
+
+    def save(self, save_file=None):
+        """
+        Stores the graph so far into a .json file.
+        """
+        if not save_file:
+            save_file = Markov.SAVE_FILE
+        with open(save_file, "w") as data:
             dump(self.graph, data)
 
     def addWord(self, recent, word):
