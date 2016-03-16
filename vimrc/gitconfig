@@ -1,0 +1,5 @@
+[user]
+	name = Simon Hajjar
+    email = simon.j.hajjar@gmail.com
+[merge]
+	conflictstyle = diff3
