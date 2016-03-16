@@ -3,6 +3,7 @@
 # Set up the .vimrc and .bash_profile files
 cp vimrc ~/.vimrc
 cp bash_profile ~/.bash_profile
+cp gitconfig ~/.gitconfig
 
 # Get the most recent version of vim
 # http://stackoverflow.com/questions/7211820/update-built-in-vim-on-mac-os-x
