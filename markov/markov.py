@@ -20,7 +20,7 @@ class Markov:
         # "." is used as both the end and the beginning of a sentence.
         self.graph = {}
         
-        # Try to load the default .jsonf ile. If it doesn't exist, we ignore
+        # Try to load the default .json file. If it doesn't exist, we ignore
         try:
             self.load(Markov.SAVE_FILE)
         except IOError:
