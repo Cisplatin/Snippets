@@ -27,4 +27,7 @@ cd ~/.vim/bundle
 git clone https://github.com/gregsexton/matchtag
 mv matchtag/ftplugin matchtag/plugin
 
+# For highlighting trailing whitespace
+git clone https://github.com/bronson/vim-trailing-whitespace
+
 cd ~
