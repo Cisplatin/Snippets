@@ -20,3 +20,11 @@ rm -rf ~/vim
 # Install pathogen for next-level plugin management
 mkdir -p ~/.vim/autoload ~/.vim/bundle && \
 curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+cd ~/.vim/bundle
+
+# For highlighting matching tags in HTML
+# Unfortunatly we have to move ftplugin to plugin for pathogen detection
+git clone https://github.com/gregsexton/matchtag
+mv matchtag/ftplugin matchtag/plugin
+
+cd ~
