@@ -2,8 +2,10 @@ execute pathogen#infect()
 
 syntax on
 set number
-set tabstop=4 
+set tabstop=4
 set expandtab
 set colorcolumn=80
 set backspace=indent,eol,start
 filetype plugin indent on
+highlight ColorColumn ctermbg=gray
+set colorcolumn=80
