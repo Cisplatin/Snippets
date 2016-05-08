@@ -2,6 +2,7 @@ execute pathogen#infect()
 
 syntax on
 set number
+set paste
 set tabstop=4
 set expandtab
 set colorcolumn=80
