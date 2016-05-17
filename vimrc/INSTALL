@@ -30,4 +30,11 @@ mv matchtag/ftplugin matchtag/plugin
 # For highlighting trailing whitespace
 git clone https://github.com/bronson/vim-trailing-whitespace
 
+# For git functionality
+git clone git://github.com/tpope/vim-fugitive.git
+
+# Install pip
+curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
+sudo easy_install pip
+
 cd ~
