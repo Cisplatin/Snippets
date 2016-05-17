@@ -1,5 +1,7 @@
 [user]
-	name = Simon Hajjar
+    name = Simon Hajjar
     email = simon.j.hajjar@gmail.com
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
+[push]
+    default = simple
