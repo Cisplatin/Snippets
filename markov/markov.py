@@ -19,13 +19,13 @@ class Markov:
         # We represent the graph has a dictionary of dictionaries. The entry
         # "." is used as both the end and the beginning of a sentence.
         self.graph = {}
-        
+
         # Try to load the default .json file. If it doesn't exist, we ignore
         try:
             self.load(Markov.SAVE_FILE)
         except IOError:
             pass
-        
+
     @staticmethod
     def empty_list():
         """
@@ -76,7 +76,7 @@ class Markov:
             self.graph[recent][word] += 1
 
     def learn(self, filename):
-        """ 
+        """
         Learns the given data for later generation.
         """
         recent = Markov.empty_list()
