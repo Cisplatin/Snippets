@@ -9,7 +9,6 @@ PERMUTATION = 1000000
 if __name__ == '__main__':
     # We try the brute force approach of finding every permutation, ordering
     # them, and then finding the millionth one
-    numbers = range(UPPER_BOUND)
 
     # Returns all permutations of the given array
     def permutate(arr):
@@ -22,5 +21,5 @@ if __name__ == '__main__':
         return result
 
     # Print the correct permutation
-    result = permutate([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])[PERMUTATION - 1]
+    result = permutate(range(UPPER_BOUND))[PERMUTATION - 1]
     print ''.join(str(i) for i in result)
