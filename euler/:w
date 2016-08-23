@@ -1,0 +1,37 @@
+"""
+How many reversible numbers are there below one-billion?
+Problem 145
+"""
+
+UPPER_BOUND = 1000000
+
+if __name__ == '__main__':
+    # Returns true if n is reversible. We use only integer arithmetic to add
+    # speed to the test.
+    def reversible(n):
+        # Make sure the reverse has no leading zeroes
+        if n % 10 == 0:
+            return False
+
+        # Add the reverse and check for even digits
+        reverse, m = 0, n
+        while m > 0:
+            reverse *= 10
+            reverse += m % 10
+            m /= 10
+        n += reverse
+
+        while n > 0:
+            if n % 2 == 0:
+                return False
+            n /= 10
+        return True
+
+    # Find all reversible numbers. We use an increment that skips numbers where
+    # the first and last number have the same parity.
+    count = 0
+    for i in xrange(1, UPPER_BOUND, 2):
+        first_digit = int(str(i)[0])
+        if first_digit <= i % 10 and reversible(i + (first_digit % 2)):
+            count += 2
+    print count
