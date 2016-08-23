@@ -3,7 +3,7 @@ How many reversible numbers are there below one-billion?
 Problem 145
 """
 
-UPPER_BOUND = 1000000000
+from itertools import chain
 
 if __name__ == '__main__':
     def reversible(n):
@@ -23,7 +23,9 @@ if __name__ == '__main__':
             return False
 
         # String conversion, once again, is slow, so we use integer
-        # arithmetic to determine the reverse of n
+        # arithmetic to determine the reverse of n. We start the reverse at
+        # n % 10 so that the first multiplication isn't pointless. This works
+        # only because we know the last digit is not a zero.
         reverse, n_temp = n % 10, n / 10
         while n_temp > 0:
             reverse *= 10
@@ -43,14 +45,14 @@ if __name__ == '__main__':
     # Although the question states that the UPPER_BOUND is a billion,
     # the program has shown that there are no numbers that satisfy this
     # property with nine digits. Not sure how to prove this, but it helps
-    # to reduce the programming time.
+    # to reduce the programming time dramatically (x10).
     #
     # We also increment by two for the following reason - if a number's first
     # and last digit have the same parity then it cannot be reversible. Thus
     # we increment by two and fix the parity in the reversible() function. This
     # should cut time in half while still finding all the numbers.
     count = 0
-    for i in xrange(1, UPPER_BOUND / 10, 2):
+    for i in xrange(11, 100000000, 2):
         # Because reversible returns true only if it is the lower of the two
         # numbers, we add two instead of one, to avoid the extra work.
         if reversible(i):
