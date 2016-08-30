@@ -12,10 +12,11 @@ Problem 41
 # is divisible by 9, meaning that the number would also be divisible by 9.
 # This brings our upper bound down to 10 ** 8 from 10 ** 9. The same logic
 # can be applied to 8-pandigital numbers, bringing the limit down once more
-# to 10 ** 7.
+# to 10 ** 7. We can bring it down one more time by realizing that the
+# highest possibility for this upper bound is 7654321.
 
 BASE, LOWEST_PRIME, LOWEST_CONSIDERED = 10, 2, 1
-SIEVE_UPPER_BOUND = BASE ** 7
+SIEVE_UPPER_BOUND = 7654321
 
 # Returns true if the given number is n-pandigital
 def pandigital(n):
