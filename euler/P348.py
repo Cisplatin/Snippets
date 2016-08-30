@@ -3,6 +3,10 @@ Sum of a Square and a Cube
 Problem 348
 """
 
+# This is a very slow solution - about O(NlogN). A faster solution would be
+# to generate palindromes first, and then check if the difference of each
+# palindrome and each cube is a square or not, leading to O(N^5/6)
+
 from collections import defaultdict
 from itertools import product
 
@@ -27,8 +31,8 @@ for i, j in product(squares, cubes):
         # remove it from the solutions
         if counts[ij_sum] == SUM_COUNT:
             solutions.append(ij_sum)
-        elif counts[ij_sum] > SUM_COUNT:
-            solutions.remove(ij_sum)
+            if len(solutions) == PALINDROMES:
+                break
 
 # We print out the final solution
 if len(solutions) < PALINDROMES:
