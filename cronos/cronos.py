@@ -28,4 +28,12 @@ class Cronos:
                 current_byte += 1
         dump(translation, open(Cronos.MAPPED_WORDS_P, "wb"))
 
-Cronos._Cronos__map()
+    @staticmethod
+    # Compress the given file
+    def compress(filename):
+        raise NotImplementedError
+
+    @staticmethod
+    # Decompress the given file
+    def decompress(filename):
+        raise NotImplementedError
