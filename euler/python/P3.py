@@ -10,14 +10,13 @@ LOWEST_PRIME = 2
 
 def sieve(cap):
     # Runs the sieve of eratosthenes to find prime numbers up to cap
-    erato, primes = [True] * cap, []
-    for i in range(LOWEST_PRIME, cap):
-        if erato[i]:
+    erato = [True] * cap
+    for prime in range(LOWEST_PRIME, cap):
+        if erato[prime]:
             # We found a prime, so switch off all multiples
-            primes.append(i)
-            for j in range(i, cap, i):
-                erato[j] = False
-    return primes
+            yield prime
+            for composite in xrange(prime, cap, prime):
+                erato[composite] = False
 
 if __name__ == '__main__':
     # Get all prime factors of the NUM, then print the largest

@@ -5,24 +5,21 @@ Problem 5
 
 from math import log
 
-MIN = 1
-MAX = 20
+MIN, MAX = 1, 20
 LOWEST_PRIME = 2
 
-def sieve(cap):
+def sieve():
     # Runs the sieve of eratosthenes to find prime numbers up to cap
-    erato, primes = [True] * cap, []
-    for i in range(LOWEST_PRIME, cap):
-        if erato[i]:
-            # We found a prime, so switch off all multiples
-            primes.append(i)
-            for j in range(i, cap, i):
-                erato[j] = False
-    return primes
+    erato = [True] * MAX
+    for prime in xrange(LOWEST_PRIME, MAX):
+        if erato[prime]:
+            yield prime
+            for composite in xrange(prime * prime, MAX, prime):
+                erato[composite] = False
 
 if __name__ == '__main__':
     # All prime numbers up to MAX
-    primes, result = sieve(MAX), 1
+    primes, result = sieve(), 1
 
     # Find the maximum power of each prime number for each factor, and multiply
     # it by the result so far

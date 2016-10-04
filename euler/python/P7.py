@@ -26,5 +26,4 @@ if __name__ == '__main__':
     # There's a theorem with an upper bound for the nth prime number (n > 6).
     # We can use this result to predict what cap is required to find the
     # PRIME'th prime number.
-    number = int(PRIME * log(PRIME) + PRIME * log(log(PRIME) - 1)) + 1
-    print sieve(number)
+    print sieve(int(PRIME * log(PRIME) + PRIME * log(log(PRIME) - 1)) + 1)
