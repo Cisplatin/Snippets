@@ -13,5 +13,4 @@ if __name__ == '__main__':
     # and down exactly 20 times. Thus there are 40 moves, 20 of which you must
     # choose to be downwards, and so the solution is 40 choose 20
     numerator = reduce(lambda x, y: x * y, range(DIM + 1, 2 * DIM + 1))
-    denominator = reduce(lambda x, y: x * y, range(1, DIM + 1))
-    print numerator / denominator
+    print numerator / reduce(lambda x, y: x * y, range(1, DIM + 1))

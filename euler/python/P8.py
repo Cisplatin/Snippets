@@ -31,7 +31,7 @@ SERIES = \
 if __name__ == '__main__':
     # Brute-force all consecutive DIGITS numbers to find the max
     result = 0
-    for i in range(0, len(SERIES) - DIGITS):
+    for i in xrange(0, len(SERIES) - DIGITS):
         product = reduce(lambda x, y: int(x) * int(y), SERIES[i:i + DIGITS], 1)
         result = max(result, product)
     print result

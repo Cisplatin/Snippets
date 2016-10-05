@@ -43,9 +43,9 @@ if __name__ == '__main__':
             return
 
     # Run checks for each dimension
-    for i in range(len(cells)):
-        multiply(range(i, i + LENGTH, 1))                   # Horizantal
-        multiply(range(i, i + LENGTH * DIM, DIM))           # Vertical
-        multiply(range(i, i + LENGTH * (DIM + 1), DIM + 1)) # Right-diagonal
-        multiply(range(i, i + LENGTH * (DIM - 1), DIM - 1)) # Left-diagonal
+    for i in xrange(len(cells)):
+        multiply(xrange(i, i + LENGTH, 1))                   # Horizantal
+        multiply(xrange(i, i + LENGTH * DIM, DIM))           # Vertical
+        multiply(xrange(i, i + LENGTH * (DIM + 1), DIM + 1)) # Right-diagonal
+        multiply(xrange(i, i + LENGTH * (DIM - 1), DIM - 1)) # Left-diagonal
     print result
