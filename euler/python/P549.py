@@ -4,7 +4,7 @@ Problem 549
 """
 
 LOWER_LIMIT = 2
-UPPER_LIMIT = 100
+UPPER_LIMIT = 10 ** 8
 
 smallest = [0] * (UPPER_LIMIT + 1)
 for prime in xrange(LOWER_LIMIT, UPPER_LIMIT + 1):
