@@ -1,6 +1,6 @@
 /*
-    Prime Generating Integers
-    Problem 357
+  Prime Power Triples
+  Problem 87
 */
 
 #include <iostream>
