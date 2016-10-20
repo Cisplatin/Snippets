@@ -3,14 +3,16 @@ Problem 2
 Even Fibonacci Numbers
 """
 
-F_0, F_1 = 1, 1
 MAXIMUM = 4000000
 
-# We generate each fibonacci number under we hit our maximum
-sum, f_n, f_m = 0, F_0, F_1
-while f_n < MAXIMUM
-    f_n, f_m = f_m, f_n + f_m
-    # Only add the even numbers we come across
-    sum += f_n % 2 == 0 ? f_n : 0
+# We create a fibonacci enumerator so that we can lazily generate them
+fibonacci = Enumerator.new do |y|
+  n = m = 1
+  loop do
+    y << n
+    n, m = m, n + m
+  end
 end
-puts sum
+
+# Sum all the numbers that are event
+puts fibonacci.take_while{|i| i < MAXIMUM}.select{|x| x.even?}.inject(:+)
