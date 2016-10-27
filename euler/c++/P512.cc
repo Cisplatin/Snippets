@@ -55,7 +55,7 @@ int main(int argc, char * argv[]) {
     }
 
     // If the value of n is odd, we add it to our total sum
-    if(n % 2) total_sum += totient[n];
+    if(n % 2) total_sum += totient[n] % (n + 1);
   }
 
   // Garbage collection and print the final answer
