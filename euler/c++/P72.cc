@@ -25,15 +25,16 @@ int main(int argc, char *argv[]) {
   std::map<uint64_t, uint64_t> totient;
   totient.insert(std::pair<uint64_t, uint64_t>(1, 1));
 
-  // To find the value of the phi function, we use a sieve of eratosthenes.
-  bool * sieve = new bool[UPPER_LIMIT + 1]();
+  // To find the value of the phi function, we use a sieve of eratosthenes. When we sieve, we might
+  // as well store the value of the largest prime that hit it.
+  uint64_t * sieve = new uint64_t[UPPER_LIMIT + 1]();
   for(uint64_t prime = LOWEST_PRIME; prime <= UPPER_LIMIT; prime++) {
     if(sieve[prime]) continue;
 
     // Note that the totient values of a prime p is p - 1.
     totient.insert(std::pair<uint64_t, uint64_t>(prime, prime - 1));
     for(uint64_t composite = prime * prime; composite <= UPPER_LIMIT; composite += prime) {
-      sieve[composite] = true;
+      sieve[composite] = prime;
     }
   }
 
@@ -45,15 +46,11 @@ int main(int argc, char *argv[]) {
     // we calculate the totient based off of the first divisor that we find.
     if(totient.find(k) == totient.end()) {
 
-      // Find the lowest divisor of this composite number k.
-      uint64_t factor = LOWEST_PRIME;
-      while(k % factor) factor++;
-
-      // Apply the formula with the found factor and add it to our map. We also need the other
-      // factor found by dividing k by factor.
-      uint64_t other = k / factor;
-      uint64_t greatest = gcd(factor, other);
-      uint64_t value = totient.at(factor) * totient.at(other) * greatest / totient.at(greatest);
+      // Find the lowest divisor of this composite number k. This will be stored in sieve
+      // thanks to our dank optimizations.
+      uint64_t other = k / sieve[k];
+      uint64_t greatest = gcd(sieve[k], other);
+      uint64_t value = totient.at(sieve[k]) * totient.at(other) * greatest / totient.at(greatest);
       totient.insert(std::pair<uint64_t, uint64_t>(k, value));
     }
 
