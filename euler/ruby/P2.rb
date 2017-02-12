@@ -3,16 +3,16 @@ Problem 2
 Even Fibonacci Numbers
 "
 
-MAXIMUM = 4000000
+MAXIMUM = 4_000_000
 
-# We create a fibonacci enumerator so that we can lazily generate them
-fibonacci = Enumerator.new do |y|
-  n = m = 1
+# We create a fibonacci enumerator so that we can lazily generate them.
+# f_n and f_m are the f_nth and f_mth fibonacci numbers.
+fibonacci = Enumerator.new do |next_element|
+  f_n = f_m = 1
   loop do
-    y << n
-    n, m = m, n + m
+    next_element << f_n
+    f_n, f_m = f_m, f_n + f_m
   end
 end
 
-# Sum all the numbers that are event
-puts fibonacci.take_while{|i| i < MAXIMUM}.select{|x| x.even?}.inject(:+)
+puts fibonacci.take_while { |i| i < MAXIMUM }.select(&:even?).inject(:+)
