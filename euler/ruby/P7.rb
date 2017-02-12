@@ -1,10 +1,12 @@
-"""
-  10001st Prime
-  Problem 7
-"""
+"
+10001st Prime
+Problem 7
+"
 
 require 'prime'
 
-PRIME = 10001
+PRIME_INDEX = 10_001
 
-puts Prime.take(PRIME).last
+# Simply take the first PRIME_INDEX prime numbers from the enumerator, then
+# take the last one
+puts Prime.take(PRIME_INDEX).last
