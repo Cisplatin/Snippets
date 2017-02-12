@@ -6,10 +6,10 @@ int karp_rabin(std::string * s, std::string * t) {
     Erik Demaine in MIT's 6.006 OCW material. The algorithm returns -1 if
     the string s is not a substring of t, and returns the index of the first
     character of the first instance if it is a substring.
-    
+
     This algorithm runs in time O(|s| + |t|)
     */
-    
+
     // We keep a rolling hash for both s and t so that the hash values of each
     // s-length substring of t does not have to be completely recomputed. The
     // rolling hash uses the division method base 128 (since all strings are
@@ -18,9 +18,9 @@ int karp_rabin(std::string * s, std::string * t) {
 
     // We also need a prime number to keep our division method a constant time
     // amortized positive result (i.e. less collisions). Note that there is
-    // a maximum number of bits for an int too which will be module a 
+    // a maximum number of bits for an int too which will be module a
     // Mersenne Prime, so no manual modulus is required.
-    
+
     // We first calculate the rolling hash of s and t. Note that according to
     // the C++ standard, s->length() is a constant complexity function, so
     // no harm by placing it in the for-condition. We use a variant of the
