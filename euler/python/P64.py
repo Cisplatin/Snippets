@@ -1,35 +1,34 @@
 """
-Convergents of e
+Odd Period Square Roots
 Problem 64
 """
 
-from fractions import Fraction
+from math import sqrt
 
-FIRST_CONVERGENT = 2 # The first convergent of e.
-CONVERGENTS = 100    # The number of convergents to compute.
+UPPER_LIMIT = 10000
 
-# A generator for each partial value of e.
-# @param count [Integer] The number of partial values to output for e.
-# @return [Integer] The next partial value for e.
-def generate_partial_values(count):
-    outputs = 1
-    current_multiple = 2
-    while outputs < count:
-        # Every third partial value is the next multiple of 2 (for e)
-        if outputs % 3 == 2:
-            yield current_multiple
-            current_multiple += 2
-        # Every other partial value is 1
-        else:
-            yield 1
-        outputs += 1
+def continued_fraction_period(n):
+    # Given a number n, we find all the coefficients for the infinite continued fraction of
+    # it's square root. We use the techniques found at:
+    # https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Continued_fraction_expansion
+
+    # First we check if it's a perfect square, in which case it will have a period of zero.
+    root = int(sqrt(n))
+    if root * root == n:
+        return False
+
+    # Run the algorithm for checking each co-efficient.
+    m_n, d_n, a_n = 0, 1, root
+    found_pairs = {}
+    while (a_n, d_n, m_n) not in found_pairs:
+        found_pairs[(a_n, d_n, m_n)] = True
+        m_n = d_n * a_n - m_n
+        d_n = (n - m_n * m_n) / d_n
+        a_n = (root + m_n) / d_n
+
+    # Return whether the period is odd or not.
+    return (len(found_pairs) - 1) % 2
 
 if __name__ == '__main__':
-    # Create the fraction bottom-to-top by reversing the partial value list
-    fraction = Fraction(0)
-    for value in reversed(list(generate_partial_values(CONVERGENTS))):
-        fraction = Fraction(1, fraction + value)
-    numerator = (fraction + FIRST_CONVERGENT).numerator
-
-    # Find the sum of the numerator digits
-    print sum(map(int, list(str(numerator))))
+    # Check each number for how many continued fraction coefficients there are.
+    print sum(map(continued_fraction_period, xrange(UPPER_LIMIT + 1)))
