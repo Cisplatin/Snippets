@@ -39,16 +39,16 @@ def merge_sort(array):
             i = array_1.pop(0) if array_1[0] < array_2[0] else array_2.pop(0)
             final_array.append(i)
 
-        # After one list is empty, the rest of the other list can be appended
+        # After one list is empty, the rest of the other list can be appended.
         final_array.extend(array_1)
         final_array.extend(array_2)
         return final_array
 
-    # Base case for the recursion
-    if len(array) == 1:
+    # Base case for the recursion.
+    if len(array) <= 1:
         return array
 
-    # Otherwise, split the list in half and sort the halves
+    # Otherwise, split the list in half and sort the halves.
     array_1 = merge_sort(array[:len(array) / 2])
     array_2 = merge_sort(array[len(array) / 2:])
     return merge_lists(array_1, array_2)
