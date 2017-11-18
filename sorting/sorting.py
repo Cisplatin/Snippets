@@ -45,13 +45,26 @@ def merge_sort(array):
         return final_array
 
     # Base case for the recursion.
-    if len(array) <= 1:
+    if len(array) < 2:
         return array
 
     # Otherwise, split the list in half and sort the halves.
-    array_1 = merge_sort(array[:len(array) / 2])
-    array_2 = merge_sort(array[len(array) / 2:])
+    mid_point = len(array) / 2
+    array_1 = merge_sort(array[:mid_point])
+    array_2 = merge_sort(array[mid_point:])
     return merge_lists(array_1, array_2)
+
+# Sorts the given array using the Counting Sort algorithm, O(n).
+# @param array [List<Integer>] The array to sort.
+# @return [List<Integer>] The sorted list.
+def counting_sort(array):
+    counts = [0 for i in xrange(max(array) + 1)]
+    for element in array:
+        counts[element] += 1
+    array = []
+    for i in xrange(len(counts)):
+        array.extend([i] * counts[i])
+    return array
 
 from random import randint
 from time import time
@@ -60,7 +73,7 @@ size = 5000
 array = [randint(0, 10000) for i in xrange(size)]
 
 start = time()
-array = merge_sort(array)
+array = counting_sort(array)
 end = time()
 
 print end - start
