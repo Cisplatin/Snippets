@@ -65,16 +65,3 @@ def counting_sort(array):
     for i in xrange(len(counts)):
         array.extend([i] * counts[i])
     return array
-
-from random import randint
-from time import time
-
-size = 5000
-array = [randint(0, 10000) for i in xrange(size)]
-
-start = time()
-array = counting_sort(array)
-end = time()
-
-print end - start
-print all(array[i] <= array[i + 1] for i in xrange(len(array) - 1))
