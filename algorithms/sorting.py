@@ -65,3 +65,31 @@ def counting_sort(array):
     for i in xrange(len(counts)):
         array.extend([i] * counts[i])
     return array
+
+# Searches the given sorted array using the Binary Search algorithm, O(logn).
+# @param array [List<T>] The sorted list.
+# @param value [T] The value to search for.
+# @return [Integer] The index of the given value in the array, or -1 if the
+#                   value was not in the array.
+def binary_search(array, value):
+    # Base case for the recursion.
+    if len(array) == 0:
+        return -1
+
+    # If the mid-point is the value, we are done
+    mid_point = len(array) / 2
+    if array[mid_point] == value:
+        return mid_point
+
+    # If the mid-point is smaller, check the right half of the array. To assure
+    # the correct index is returned, we also add the values of the array that
+    # will be unknown in the next function call.
+    elif array[mid_point] < value:
+        index = binary_search(array[mid_point + 1:], value)
+        if index >= 0:
+            index += mid_point + 1
+        return index
+
+    # Otherwise, we check the left half of the array.
+    else:
+        return binary_search(array[:mid_point], value)
